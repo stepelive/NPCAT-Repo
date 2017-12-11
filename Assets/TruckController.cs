@@ -8,7 +8,6 @@ public class TruckController : MonoBehaviour
     public List<Truck> Trucks;
     public Truck ActiveByDefault;
     private Truck _activeTruck;
-    // Use this for initialization
     void Start()
     {
         if (ActiveByDefault != null)
@@ -18,7 +17,5 @@ public class TruckController : MonoBehaviour
                 ActiveByDefault.ChangeTruck();
             }
     }
-
-    // Update is called once per frame
 
 }
