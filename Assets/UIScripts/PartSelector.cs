@@ -31,12 +31,13 @@ public class PartSelector : MonoBehaviour
         {
             var newbtn = InstantiateNewButton();
             newbtn.GetComponentInChildren<Text>().text = part.Name;
-            newbtn.onClick.AddListener(delegate {
-                part.gameObject.SetActive(true); });
+            newbtn.onClick.AddListener(delegate
+            {
+                TruckController.GetInstance().CheckDetail(part);
+            });
             if (disabledElements.Contains(newbtn.gameObject))
                 disabledElements.Remove(newbtn.gameObject);
             activeElements.Add(newbtn.gameObject);
-            Debug.Log("@");
         }
 
     }
@@ -46,7 +47,9 @@ public class PartSelector : MonoBehaviour
         if (disabledElements.Count != 0)
         {
             disabledElements[0].SetActive(true);
-            return disabledElements[0].GetComponent<Button>();
+            var btn = disabledElements[0].GetComponent<Button>();
+            btn.onClick.RemoveAllListeners();
+            return btn;
         }
         var t = Instantiate(_buttonPrefab, buttonParentTransform);
         return t;

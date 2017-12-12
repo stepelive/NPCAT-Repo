@@ -26,11 +26,15 @@ public class UIBuilder : MonoBehaviour {
     [SerializeField] private FilterButton _buttonPrefab;
     [SerializeField] private PartSelector _partSelector;
     [SerializeField] private RectTransform _filterPanel;
-    public void BuildEngineButton(List<TruckPart> engineList)
+    public void BuildButton(List<TruckPart> engineList)
     {
         var btn = Instantiate(_buttonPrefab, _filterPanel);
         btn.GetComponent<Button>().onClick.AddListener(delegate {  _partSelector.Build(engineList); });
+        
     }
+
+   
+
     void Awake()
     {
         _instance = this;
