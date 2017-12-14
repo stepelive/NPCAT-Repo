@@ -9,6 +9,8 @@ public class TruckPart : MonoBehaviour
     [SerializeField]
     private PartType _type;
 
+    public float Price;
+
     public string Name
     {
         get
@@ -36,6 +38,8 @@ public enum PartType
     WheelBase,
     NeitralTank,
     FuelTank,
-    SpareWheel
+    SpareWheel,
+    InfoSystem,
+    Dopog
 }
 

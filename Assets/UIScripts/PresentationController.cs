@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PresentationController : MonoBehaviour
+public class PresentationController : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     private Transform _targetTruck;
@@ -19,16 +20,21 @@ public class PresentationController : MonoBehaviour
     [SerializeField]
     private RectTransform _pointer;
 
+    [SerializeField] private List<GameObject> _floatPanels;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        DisableAllFloatPanels();
+    }
+    public void DisableAllFloatPanels()
+    {
+        foreach (var panel in _floatPanels)
+        {
+            panel.GetComponent<HiddablePanel>().Hide();
+        }
+    }
    
-
-    private readonly Vector2 _centerScreen = new Vector2(Screen.width / 2, Screen.height / 2);
-    // Use this for initialization
-    void Start () {
-
-		
-	}
 	
-	// Update is called once per frame
 	void Update () {
 	    if (_targetTruck != null)
 	    {
@@ -39,10 +45,8 @@ public class PresentationController : MonoBehaviour
 	            position.y * Screen.height
             );
 	        _pointer.position = screenPosition;
-            //_textPanel.position = new Vector3(Screen.width-_textPanel.sizeDelta.x, _centerScreen.y);
             Debug.DrawLine(_pointer.position, _textPanel.position);
-	        /*_lineRectTransforms.LookAt(_textPanel);
-	        _lineRectTransforms.localEulerAngles += RotationOffset;*/
+
 	    }
 	}
 

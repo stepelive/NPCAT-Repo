@@ -1,17 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FilterButton : MonoBehaviour
 {
     [SerializeField]
     private PartSelector _partSelector;
 
-
-    public void BuildPartSelector(List<TruckPart> truckParts)
-    {
-
-        _partSelector.Build(truckParts);
-    }
-	
+    public Image Image;
 }

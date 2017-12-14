@@ -24,11 +24,9 @@ public class TruckController : MonoBehaviour
     
     #endregion
 
-    
-
     public List<Truck> Trucks;
     public Truck ActiveByDefault;
-    private Truck _activeTruck;
+    public Truck ActiveTruck;
     void Start()
     {
         _instance = this;
@@ -36,26 +34,39 @@ public class TruckController : MonoBehaviour
         if (ActiveByDefault != null)
             if (Trucks.IndexOf(ActiveByDefault) != -1)
             {
-                _activeTruck = ActiveByDefault;
+                ActiveTruck = ActiveByDefault;
                 ActiveByDefault.ChangeTruck();
             }
     }
 
-    public void CheckDetail(TruckPart part)
+    public void CheckDetail(TruckPart part,bool state)
     {
         switch (part.Type)
         {
-            case PartType.Engine: _activeTruck.CheckEngine(part);
+            case PartType.Engine: ActiveTruck.CheckEngine(part, state);
                 break;
-            case PartType.Transmission: _activeTruck.CheckTransmission(part);
+            case PartType.Transmission: ActiveTruck.CheckTransmission(part, state);
                 break;
-            case PartType.Suspension: _activeTruck.CheckSuspension(part);
+            case PartType.Suspension: ActiveTruck.CheckSuspension(part, state);
                 break;
-            case PartType.Cabin: _activeTruck.CheckCabine(part);
+            case PartType.Cabin: ActiveTruck.CheckCabine(part, state);
                 break;
-            case PartType.FuelTank:_activeTruck.CheckFuelTank(part);
+            case PartType.FuelTank:ActiveTruck.CheckFuelTank(part, state);
+                break;
+            case PartType.NeitralTank:ActiveTruck.CheckNeitralTank(part, state);
+                break;
+            case PartType.SleepArea:ActiveTruck.CheckSleepArea(part, state);
+                break;
+            case PartType.SpareWheel:ActiveTruck.CheckSpareWheel(part, state);
+                break;
+            case PartType.WheelBase:ActiveTruck.CheckWheelBase(part, state);
+                break;
+            case PartType.Dopog: ActiveTruck.CheckDopog(part, state);
+                break;
+            case PartType.InfoSystem: ActiveTruck.CheckInfoSystem(part, state);
                 break;
         }
+        ModelBehavior.GetInstance().ShowModels(ActiveTruck.GetAvailableModels());
     }
 
 }

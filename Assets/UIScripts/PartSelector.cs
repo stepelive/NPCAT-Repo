@@ -9,10 +9,13 @@ public class PartSelector : MonoBehaviour
     public List<GameObject> disabledElements;
 
     [SerializeField] private Button _buttonPrefab;
-    [SerializeField] private Button _togglePrefab;
+    [SerializeField] private Toggle _togglePrefab;
 
     [SerializeField] private RectTransform toggleParentTransform;
     [SerializeField] private RectTransform buttonParentTransform;
+
+    private static Button _activeSelector;
+
     void Start()
     {
         activeElements = new List<GameObject>();
@@ -21,52 +24,53 @@ public class PartSelector : MonoBehaviour
     /// Тут есть баг, пока не исправлен
     /// </summary>
     /// <param name="_truckParts"></param>
-    public void Build(List<TruckPart> _truckParts)
+    public void Build(List<TruckPart> _truckParts,Button sender)
     {
-        gameObject.SetActive(true);
-        ResetAllElements();
-        
-        activeElements = new List<GameObject>();
-        foreach (var part in _truckParts)
+        if (_activeSelector == sender)
         {
-            var newbtn = InstantiateNewButton();
-            newbtn.GetComponentInChildren<Text>().text = part.Name;
-            newbtn.onClick.AddListener(delegate
-            {
-                TruckController.GetInstance().CheckDetail(part);
-            });
-            if (disabledElements.Contains(newbtn.gameObject))
-                disabledElements.Remove(newbtn.gameObject);
-            activeElements.Add(newbtn.gameObject);
+            GetComponent<HiddablePanel>().Hide();
+            _activeSelector = null;
+
         }
+        else
+        {
+            _activeSelector = sender;
+            GetComponent<HiddablePanel>().Show();
+            ResetAllElements();
+
+            activeElements = new List<GameObject>();
+
+            foreach (var part in _truckParts)
+            {
+                var newbtn = InstantiateNewToggle();
+                newbtn.GetComponentInChildren<Text>().text = part.Name;
+                newbtn.isOn = part.gameObject.activeSelf;
+                newbtn.onValueChanged.AddListener(delegate
+                {
+                    TruckController.GetInstance().CheckDetail(part, newbtn.isOn);
+                });
+                if (disabledElements.Contains(newbtn.gameObject))
+                    disabledElements.Remove(newbtn.gameObject);
+                activeElements.Add(newbtn.gameObject);
+            }
+        }
+
 
     }
-
-    private Button InstantiateNewButton()
+    private Toggle InstantiateNewToggle()
     {
-        if (disabledElements.Count != 0)
-        {
-            disabledElements[0].SetActive(true);
-            var btn = disabledElements[0].GetComponent<Button>();
-            btn.onClick.RemoveAllListeners();
-            return btn;
-        }
-        var t = Instantiate(_buttonPrefab, buttonParentTransform);
+        var t = Instantiate(_togglePrefab, toggleParentTransform);
+        t.group = toggleParentTransform.GetComponent<ToggleGroup>();
         return t;
     }
-
+  
     private void ResetAllElements()
     {
-        var childrens = buttonParentTransform.GetComponentsInChildren<Button>();
+        var childrens = toggleParentTransform.GetComponentsInChildren<Toggle>();
         foreach (var children in childrens)
         {
-            children.gameObject.SetActive(false);
+            GameObject.Destroy(children.gameObject);
         }
-        for(var i=0; i<activeElements.Count; i++)
-        {
-            activeElements[i].SetActive(false);
-            disabledElements.Add(activeElements[i]);
-        }
-        
+
     }
 }

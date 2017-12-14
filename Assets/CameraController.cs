@@ -10,7 +10,6 @@ public class CameraController : MonoBehaviour
     private bool _isRotating; 
 	void Update ()
 	{
-	    
 	    if (_isRotating)
 	    {
 	        float Delta = Input.mousePosition.x - _prePosX;
