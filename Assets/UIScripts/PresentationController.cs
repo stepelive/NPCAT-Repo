@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PresentationController : MonoBehaviour, IPointerClickHandler
+public class PresentationController : MonoBehaviour
 {
     [SerializeField]
     private Transform _targetTruck;
@@ -18,21 +18,7 @@ public class PresentationController : MonoBehaviour, IPointerClickHandler
     private Camera _camera;
 
     [SerializeField]
-    private RectTransform _pointer;
-
-    [SerializeField] private List<GameObject> _floatPanels;
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        DisableAllFloatPanels();
-    }
-    public void DisableAllFloatPanels()
-    {
-        foreach (var panel in _floatPanels)
-        {
-            panel.GetComponent<HiddablePanel>().Hide();
-        }
-    }
+    private RectTransform _pointer;  
    
 	
 	void Update () {
@@ -48,12 +34,5 @@ public class PresentationController : MonoBehaviour, IPointerClickHandler
             Debug.DrawLine(_pointer.position, _textPanel.position);
 
 	    }
-	}
-
-    public Vector3 RotationOffset;
-    public void UpdateState()
-    {
-        
-    }
-
+	}    
 }
