@@ -225,11 +225,14 @@ namespace Assets.TruckLogic
                     _currentComplectaion.Remove(_dopog);
                     _dopog.gameObject.SetActive(false);
                 }
-                _dopog = engine;
-                engine.gameObject.SetActive(true);
-                _currentComplectaion.Add(_dopog);
+                if (engine != null)
+                {
+                    _dopog = engine;
+                    engine.gameObject.SetActive(true);
+                    _currentComplectaion.Add(_dopog);
+                }
             }
-            else if (_engine != null)
+            else if (_dopog != null)
             {
                 _dopog.gameObject.SetActive(false);
                 _currentComplectaion.Remove(_dopog);
@@ -248,7 +251,7 @@ namespace Assets.TruckLogic
                 engine.gameObject.SetActive(true);
                 _currentComplectaion.Add(_infoSystem);
             }
-            else if (_engine != null)
+            else if (_infoSystem != null)
             {
                 _infoSystem.gameObject.SetActive(false);
                 _currentComplectaion.Remove(_infoSystem);
